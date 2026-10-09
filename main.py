@@ -4,6 +4,7 @@ from typing import List, Literal
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from google import genai
 from pydantic import BaseModel
 
@@ -14,6 +15,14 @@ API_KEY = os.getenv("GEMINI_API_KEY")
 app = FastAPI(
     title="Solar Panel Inspection API",
     version="1.0.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 client = genai.Client(api_key=API_KEY) if API_KEY else None
